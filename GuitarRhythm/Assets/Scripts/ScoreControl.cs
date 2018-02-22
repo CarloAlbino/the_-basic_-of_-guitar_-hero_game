@@ -1,16 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(TextMesh))]
 public class ScoreControl : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+    private TextMesh m_ScoreDisplay;
+    
+	void Start ()
+    {
+        m_ScoreDisplay = GetComponent<TextMesh>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		GetComponent<TextMesh>().text = "Score :" + gm.totalscore;
+
+	void Update ()
+    {
+        m_ScoreDisplay.text = "Score :" + GameController.totalscore;
 	}
 }

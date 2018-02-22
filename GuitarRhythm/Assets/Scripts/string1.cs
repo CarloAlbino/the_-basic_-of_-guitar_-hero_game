@@ -1,40 +1,47 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class string1 : MonoBehaviour {
 
 	public KeyCode activateString;
 	public string LockInput = "n";
-	public  static string releaseKey = "n";
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if ((Input.GetKeyDown (activateString)) &&  (LockInput == "n")) {
+	public static string releaseKey = "n";
+
+    private Rigidbody m_Rigidbody;
+
+    private void Start()
+    {
+        m_Rigidbody = GetComponent<Rigidbody>();
+    }
+
+	private void Update ()
+    {
+		if (Input.GetKeyDown (activateString) && LockInput == "n")
+        {
 			LockInput = "y";
 
-			GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 2);
-			StartCoroutine (retractCollider ());
+            m_Rigidbody.velocity = new Vector3 (0, 0, 2);
+			StartCoroutine (RetractCollider ());
 
 			releaseKey = "n";
 		}
 
-		if ((Input.GetKeyUp (activateString))) {
+		if (Input.GetKeyUp (activateString))
+        {
 			releaseKey = "y";
 		}
 	}
-	IEnumerator retractCollider(){
-		
-		yield return new WaitForSeconds (0.75f);
 
-	   GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
+	private IEnumerator RetractCollider()
+    {
+	    yield return new WaitForSeconds (0.75f);
 
-		if (releaseKey == "n") {
-			
+        m_Rigidbody.velocity = Vector3.zero;
+
+		if (releaseKey == "n")
+        {
 			yield return new WaitForSeconds (1);
 			StartCoroutine (releaseNote ());
 		}
@@ -44,13 +51,13 @@ public class string1 : MonoBehaviour {
 			StartCoroutine (releaseNote ());
 		}
 
-
 		LockInput = "n";
 	}
 
-	IEnumerator releaseNote(){
-		GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, -2);
+	private IEnumerator releaseNote()
+    {
+        m_Rigidbody.velocity = new Vector3 (0, 0, -2);
 		yield return new WaitForSeconds (0.75f);
-		GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
+        m_Rigidbody.velocity = Vector3.zero;
 	}
 }
